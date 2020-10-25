@@ -1,0 +1,7 @@
+stock_env
+.vscode
+financetools.egg-info
+
+*__pycache__
+
+config.py
