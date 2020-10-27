@@ -1,6 +1,5 @@
 import requests
 
-
 class AlphaVantageHandler():
     def __init__(self, api_key=None):
         self.api_key = api_key
@@ -16,4 +15,4 @@ class AlphaVantageHandler():
                              "symbol": symbol,
                              "apikey": self.api_key,
                          })
-        return r
+        return r.json()
