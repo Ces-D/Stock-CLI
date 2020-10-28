@@ -18,10 +18,9 @@ def cli(ctx):
     """Stock Information"""
     ctx.obj = Portfolio(ALPHA_VANTAGE_KEY)
 
-
 @cli.command()
 @click.pass_context
-def list(ctx):
+def stocks(ctx):
     portfolio_path = open(ctx.obj.portfolio_path)
     portfolio = json.load(portfolio_path)
     click.echo(portfolio["stocks"])
