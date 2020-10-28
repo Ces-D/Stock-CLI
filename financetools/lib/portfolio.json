@@ -1,6 +1,1 @@
-{
-    "stocks": [
-        "abc",
-        "google"
-    ]
-}
+{"stocks": ["ABC", "SBUX"]}

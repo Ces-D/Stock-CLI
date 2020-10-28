@@ -5,7 +5,6 @@ import click
 cmd_folder = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "commands"))
 
-
 class ComplexCLI(click.MultiCommand):
     def list_commands(self, ctx):
         rv = []
