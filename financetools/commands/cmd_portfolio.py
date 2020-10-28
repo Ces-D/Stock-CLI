@@ -28,10 +28,25 @@ def list(ctx):
 
 
 @cli.command()
-@click.option('--func', default="GLOBAL_QUOTE", help="Alpha Vantage Endpoint")
+@click.option('--func', help="Alpha Vantage Endpoint")
 @click.option('--symbol', help="Symbol of a Stock")
 @click.pass_context
 def request(ctx, func, symbol):
     api = ctx.obj.api
     r = api.make_request(func, symbol)
     click.echo(r)
+
+
+@cli.command()
+@click.option("-s", type=str)
+@click.pass_context
+def add(ctx, s):
+    with open(ctx.obj.portfolio_path) as read:
+        data = json.load(read)
+        if data["stocks"].count(s) > 0:
+            click.echo("Stock already exists in Portfolio")
+        else:
+            data["stocks"].append(s)
+            with open(ctx.obj.portfolio_path, "w") as write:
+                json.dump(data, write)
+            click.echo("Stock has been added to Portfolio")
