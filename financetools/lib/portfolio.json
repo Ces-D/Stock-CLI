@@ -1,1 +1,12 @@
-{"stocks": ["ABC", "SBUX"]}
+{
+    "stocks": [
+        {
+            "symbol": "ABC",
+            "data": []
+        },
+        {
+            "symbol": "SBUX",
+            "data": [{"open": 94}]
+        }
+    ]
+}

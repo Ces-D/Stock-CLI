@@ -4,7 +4,7 @@ class AlphaVantageHandler():
     def __init__(self, api_key=None):
         self.api_key = api_key
 
-    def make_request(self, symbol, function_name="GLOBAL_QUOTE"):
+    def make_request(self,symbol, function_name="GLOBAL_QUOTE"):
         """
         Handler for making api requests
         params: [optional] datatype=json
