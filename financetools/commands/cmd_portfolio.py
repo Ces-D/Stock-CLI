@@ -43,40 +43,40 @@ def lookup(ctx, symbol, func):
 
 
 @cli.command()
-@click.option("-s", type=str)
+@click.option("--symbol", "-s", type=str, help="Add a Stock to your Portfolio")
 @click.pass_context
-def add(ctx, s):
+def add(ctx, symbol):
     with open(ctx.obj.portfolio_path) as read:
         data = json.load(read)
         symbols = [item.get("symbol") for item in data["stocks"]]
-        if symbols.count(s) > 0:
-            click.echo(f"{s} already exists in Portfolio")
+        if symbols.count(symbol) > 0:
+            click.echo(f"{symbol} already exists in Portfolio")
         else:
-            item = {"symbol": s, "data": []}
+            item = {"symbol": symbol, "data": []}
             data["stocks"].append(item)
             with open(ctx.obj.portfolio_path, "w") as write:
                 json.dump(data, write, indent=4)
-            click.echo(f"{s} has been added to Portfolio")
+            click.echo(f"{symbol} has been added to Portfolio")
 
 
 @cli.command()
-@click.option("-s", type=str)
+@click.option("--symbol", "-s", type=str, help="Remove a Stock from your Portfolio")
 @click.pass_context
-def remove(ctx, s):
+def remove(ctx, symbol):
     with open(ctx.obj.portfolio_path) as read:
         data = json.load(read)
         symbols = [item.get("symbol") for item in data["stocks"]]
-        if symbols.count(s) > 0:
+        if symbols.count(symbol) > 0:
             items = [
                 item for item in data["stocks"]
-                if not (s == item.get("symbol"))
+                if not (symbol == item.get("symbol"))
             ]
             stocks = {"stocks": items}
             with open(ctx.obj.portfolio_path, "w") as write:
                 json.dump(stocks, write, indent=4)
-            click.echo(f"{s} has been removed from Portfolio")
+            click.echo(f"{symbol} has been removed from Portfolio")
         else:
-            click.echo(f"{s} does not exist in Portfolio")
+            click.echo(f"{symbol} does not exist in Portfolio")
 
 
 @cli.command()

@@ -1,3 +1,20 @@
 {
-    "stocks": []
+    "stocks": [
+        {
+            "symbol": "IBM",
+            "cost":0,
+            "shares": 2,
+            "data": [
+                {
+                    "date": "Thu Oct 29 00:57:06 2020",
+                    "open": "108.6600",
+                    "low": "105.9200",
+                    "high": "109.7300",
+                    "price": "106.6500",
+                    "change": "-3.9100",
+                    "change_percent": "-3.5365%"
+                }
+            ]
+        }
+    ]
 }
