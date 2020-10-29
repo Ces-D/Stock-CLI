@@ -2,7 +2,6 @@ import click
 import os
 import json
 import datetime
-import pandas as pd
 
 from financetools.utilities.portfolio_util import AlphaVantageHandler
 from financetools.config import ALPHA_VANTAGE_KEY
@@ -56,7 +55,7 @@ def add(ctx, s):
             item = {"symbol": s, "data": []}
             data["stocks"].append(item)
             with open(ctx.obj.portfolio_path, "w") as write:
-                json.dump(data, write)
+                json.dump(data, write, indent=4)
             click.echo(f"{s} has been added to Portfolio")
 
 
@@ -74,47 +73,33 @@ def remove(ctx, s):
             ]
             stocks = {"stocks": items}
             with open(ctx.obj.portfolio_path, "w") as write:
-                json.dump(stocks, write)
+                json.dump(stocks, write, indent=4)
             click.echo(f"{s} has been removed from Portfolio")
         else:
             click.echo(f"{s} does not exist in Portfolio")
 
 
-# @cli.command()
-# @click.pass_context
-# def update(ctx):
-#     with open(ctx.obj.portfolio_path) as read:
-#         api = ctx.obj.api
-#         file_data = json.load(read)
-#         file_update = {"stocks":[]}
-#         stock_symbols = [item.get("symbol") for item in file_data["stocks"]]
-
-#         for symbol in stock_symbols:
-#             index = stock_symbols.index(symbol)
-#             response = api.make_request(symbol).get("Global Quote")
-#             stock_item = file_data["stocks"][index]
-#             stock_data = stock_item["data"]
-#             captured = {
-#                 "date": datetime.datetime.today().strftime('%c'),
-#                 "open": response["02. open"],
-#                 "price": response["05. price"],
-#                 "previous_close": response["08. previous close"],
-#                 "change": response["09. change"],
-#                 "change_percent": response["10. change percent"]
-#             }
-#             updated_stock_data = stock_data.append(captured)
-#             click.echo(updated_stock_data)
-#             updated_stock_item = stock_item["data"].append(updated_stock_data)
-#             click.echo(updated_stock_item)
-#             file_update["stocks"].append(updated_stock_item)
-#         click.echo(file_update)
-#     # click.echo("Portfolio has been updated")
-
-
 @cli.command()
 @click.pass_context
 def update(ctx):
-    json_file = pd.read_json(ctx.obj.portfolio_path, typ='series')
-    stocks = json_file["stocks"]
-    updated = stocks[1]["data"]
-    click.echo(updated)
+    with open(ctx.obj.portfolio_path) as json_file:
+        data = json.load(json_file)
+        stocks = data["stocks"]
+        stock_symbols = [item.get("symbol") for item in stocks]
+        for symbol in stock_symbols:
+            index = stock_symbols.index(symbol)
+            location = stocks[index].get("data")
+            response = ctx.obj.api.make_request(symbol).get("Global Quote")
+            formatted_response = {
+                "date": datetime.datetime.now().strftime("%c"),
+                "open": response["02. open"],
+                "low": response["04. low"],
+                "high": response["03. high"],
+                "price": response["05. price"],
+                "change": response["09. change"],
+                "change_percent": response["10. change percent"]
+            }
+            location.append(formatted_response)
+            with open(ctx.obj.portfolio_path, "w") as write_file:
+                json.dump(data, write_file, indent=4)
+        click.echo("Portfolio has been Updated")

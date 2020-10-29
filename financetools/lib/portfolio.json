@@ -1,12 +1,3 @@
 {
-    "stocks": [
-        {
-            "symbol": "ABC",
-            "data": []
-        },
-        {
-            "symbol": "SBUX",
-            "data": [{"open": 94}]
-        }
-    ]
+    "stocks": []
 }
